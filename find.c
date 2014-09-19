@@ -98,6 +98,9 @@ static void conn_errorcb(struct bufferevent *bev, short events, void *ctx)
 
 static void conn_readcb(struct bufferevent *bev, void *ctx)
 {
+#ifdef DEBUG
+	printf("conn_readcb starting\n");
+#endif
 	char *email = NULL;
 	int retCode = -1;
 	struct evbuffer *evreturn = NULL;

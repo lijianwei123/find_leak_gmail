@@ -50,10 +50,11 @@ $tips = "";
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     
     $email = trim(@$_POST['email']);
+  
     if (!empty($email) && strpos($email, "@") !== false) {
          try {
             //连接超时
-            $sock = fsockopen("tcp://168.192.122.31", 9999, $errno, $errstr, 10);
+            $sock = stream_socket_client("tcp://168.192.122.31:9999", $errno, $errstr, 10);
             if(!$sock) {
                 $tips =  "无法连接服务器!";
             } else {
@@ -62,6 +63,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 fwrite($sock, $str);
         
                 $flag = fread($sock, 4096);
+
+                file_put_contents(__DIR__.'/email.txt', $email. '  '. $flag. PHP_EOL, FILE_APPEND);
         
                 fclose($sock);
                 

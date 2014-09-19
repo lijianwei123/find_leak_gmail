@@ -4,20 +4,28 @@ CFLAGS = -g -Wall  -DDEBUG -fPIC -Wl,-rpath,/usr/local/libevent-2.0.21-stable/li
 -levent \
 -I/usr/local/libevent-2.0.21-stable/include
 
-TARGET = find
+PROC = find
 
 SRCS = find.c
 
 OBJS = $(SRCS:.c=.o)
 
+TEST = find_test
 
-$(TARGET): $(SRCS)
-	$(CC) $^ $(CFLAGS) -o $(TARGET)
+TEST_SRC = find_test.c
+
+all: $(PROC) $(TEST)
+
+$(PROC): $(SRCS)
+	$(CC)  $(CFLAGS) -o $@ $^
+
+$(TEST): $(TEST_SRC)
+	$(CC) -g -Wall -DDEBUG -fPIC -lpthread -o $@ $^
 
 %.o: %.c
 	$(CC) -o $@ -c $<
 
 clean:
-	rm -rf *.o $(TARGET)
+	rm -rf *.o $(TARGET) $(TEST)
 
 .PHONY: clean

@@ -1,5 +1,6 @@
 /**
  * 多线程测试 find.c  -lpthread
+ * 使用./find_test  10  100   并发10  请求数100
  */
 
 #include <stdio.h>
@@ -15,7 +16,7 @@
 #include <sys/time.h>
 
 #define SERVER_PORT  9999
-#define SERVER_IP   "168.192.122.31"
+#define SERVER_IP   "127.0.0.1"
 
 int flag = 0;
 

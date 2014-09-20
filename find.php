@@ -64,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
                 $flag = fread($sock, 4096);
 
-                file_put_contents(__DIR__.'/email.txt', $email. '  '. $flag. PHP_EOL, FILE_APPEND);
+                //file_put_contents(__DIR__.'/email.txt', $email. '  '. $flag. PHP_EOL, FILE_APPEND);
         
                 fclose($sock);
                 
@@ -88,7 +88,7 @@ if ($tips) {
     <div id="login-wrap">
         <h2>查找<?=$tips?></h2>
         <form action="" id="login-form" name="login-form" method="post">
-            <input type="text" value="" name="email" id="email"> <input type="submit" value="GOOOOOO" id="login-btn"/>
+            <input type="text" value="johnny.r.stivers@gmail.com" name="email" id="email"> <input type="submit" value="GOOOOOO" id="login-btn"/>
         </form>
     </div>
 

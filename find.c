@@ -131,6 +131,7 @@ static void conn_readcb(struct bufferevent *bev, void *ctx)
 static void conn_writecb(struct bufferevent *bev, void *user_data)
 {
 #ifdef DEBUG
+	printf("input length:%d\n", evbuffer_get_length(bev->input));
 	printf("conn_writecb starting\n");
 #endif
 	struct evbuffer *output = bufferevent_get_output(bev);
@@ -149,12 +150,12 @@ static void listener_cb(struct evconnlistener *listener, evutil_socket_t fd,
 
 	bev = bufferevent_socket_new(base, fd, BEV_OPT_CLOSE_ON_FREE);
 	if (!bev) {
-		fprintf(stderr, "Error constructing bufferevent!");
+		fprintf(stderr, "Error constructing bufferevent!\n");
 		event_base_loopbreak(base);
 		return;
 	}
 	bufferevent_setcb(bev, conn_readcb, conn_writecb, conn_errorcb, NULL);
-	bufferevent_enable(bev, EV_READ | EV_WRITE);
+	bufferevent_enable(bev, EV_READ);
 
 	//bufferevent_disable(bev, EV_READ);
 	//bufferevent_write(bev, MESSAGE, strlen(MESSAGE));
@@ -188,7 +189,7 @@ int main(int argc, char **argv)
 
 	gmail_filename = strdup(argv[1]);
 	if (access(gmail_filename, F_OK) < 0) {
-		fprintf(stderr, "%s don't exist!", gmail_filename);
+		fprintf(stderr, "%s don't exist!\n", gmail_filename);
 		exit(EXIT_FAILURE);
 		return -1;
 	}
@@ -225,6 +226,7 @@ int main(int argc, char **argv)
 	sin.sin_family = AF_INET;
 	sin.sin_port = htons(SOCK_PORT);
 
+	//LEV_OPT_LEAVE_SOCKETS_BLOCKING  可以看下源码的解释
 	listener = evconnlistener_new_bind(base, listener_cb, (void *)base,
 		LEV_OPT_REUSEABLE|LEV_OPT_CLOSE_ON_FREE, -1,
 		(struct sockaddr*)&sin,

@@ -30,3 +30,8 @@ set email = "lijianwei_123@126.com"
 jump find.c:200
 
 
+==============
+测试程序
+./find_test 10 100
+
+
